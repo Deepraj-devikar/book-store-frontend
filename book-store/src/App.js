@@ -1,8 +1,8 @@
-import LoginSignup from "./pages/login-signup/LoginSignup";
+import Router from "./router/Router";
 
 function App() {
   return (
-    <LoginSignup />
+    <Router />
   );
 }
 

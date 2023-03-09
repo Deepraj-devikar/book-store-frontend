@@ -5,9 +5,9 @@ import Login from '../../components/login/Login';
 import { useState } from 'react';
 import SignUp from '../../components/signup/SignUp';
 
-export default function LoginSignup() {
+export default function LoginSignup(props) {
     const [state, setState] = useState({
-        showForm: 'login'
+        showForm: props.tab == 'login' ? 'login' : 'signup'    
     });
 
     const formToggel = (formName) => {
