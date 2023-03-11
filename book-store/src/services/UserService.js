@@ -5,10 +5,10 @@ const instance = axios.create({
     timeout: 1000
 });
 
-export const LoginApi = (data) => {
-    return instance.post(`login`, data);
+export const LoginApi = async (data) => {
+    return await instance.post(`login`, data);
 };
 
-export const SignUpApi = (data) => {
-    return instance.post(`register`, data);
+export const SignUpApi = async (data) => {
+    return await instance.post(`register`, data);
 }

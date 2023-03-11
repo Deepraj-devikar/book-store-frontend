@@ -14,7 +14,7 @@ import bookLogo from '../../images/education.svg';
 import './Header.css';
 import { connect } from "react-redux";
 import { useEffect } from 'react';
-import { CART_DATA } from '../../redux/constants';
+import { CART_DATA, CART_PAGE } from '../../redux/constants';
 import { GetCartApi } from '../../services/DataService';
 
 const Search = styled('div')(({ theme }) => ({
@@ -65,7 +65,6 @@ function Header(props) {
         () => {
             GetCartApi()
             .then(response => {
-                console.log('my cart response, ', response);
                 props.dispatch({
                     type: CART_DATA,
                     cartData: response.data.data
@@ -77,6 +76,12 @@ function Header(props) {
         },
         []
     )
+
+    const cartIconClickHandler = () => {
+        props.dispatch({
+            type: CART_PAGE
+        });
+    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -119,6 +124,7 @@ function Header(props) {
                             size="large"
                             aria-label="show 17 new notifications"
                             color="inherit"
+                            onClick={cartIconClickHandler}
                         >
                             <Badge badgeContent={props.cartData ? props.cartData.books.length : 0} color="error">
                                 <ShoppingCartOutlinedIcon />
@@ -133,7 +139,6 @@ function Header(props) {
 };
 
 const mapStateToProps = (state) => {
-    console.log('in header redux, ', state);
     return {
         cartData: state.CartReducer.cartData
     }

@@ -1,10 +1,32 @@
-import { Button, FormControlLabel, Paper, Radio, RadioGroup, TextField } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
-import AddressNotSelected from "../addresses/AddressNotSelected";
+import { Button, Paper, TextField } from "@mui/material";
+import { connect } from "react-redux";
+import { ADDRESS } from "../../redux/constants";
 import AddressSelected from "../addresses/AddressSelected";
 import './CustomerDetail.css';
 
-export default function CustomerDetail() {
+function CustomerDetail(props) {
+    const handleUserInput = (e) => {
+        props.dispatch({
+            type: ADDRESS,
+            key: e.target.name,
+            value: e.target.value
+        })
+    };
+
+    const continueClickHandler = () => {
+        let isValidAddress = true;
+        for(let key in props.addressData){
+            if(props.addressData[key] == ''){
+                isValidAddress = false;
+            }
+        }
+        if(isValidAddress){
+            props.countPlaceOrderGetSet(3);
+        }else{
+            alert("Enter Address...")
+        }
+    }
+
     return (
         <div className="cart-customer-detail-box">
             <Paper style={{
@@ -30,28 +52,15 @@ export default function CustomerDetail() {
                     </div>
                     <div className="cart-customer-detail-addresses">
                         <div className="cart-customer-detail-user-detail">
-                            <TextField size="small" fullWidth={true} label="Full Name" name="name" />
-                            <TextField size="small" fullWidth={true} label="Mobile Number" name="phoneNumber" />
+                            <TextField size="small" fullWidth={true} label="Full Name" name="name" onChange={handleUserInput}/>
+                            <TextField size="small" fullWidth={true} label="Mobile Number" name="phoneNumber" onChange={handleUserInput}/>
                         </div>
-                        <RadioGroup
-                            aria-labelledby="cart-customer-detail-address-radio-buttons-group-label"
-                            defaultValue="female"
-                            name="address"
-                        >
-                            <FormControlLabel value="check_1" 
-                                control={<Radio sx={{'&.Mui-checked': {color: deepOrange[900]}}} />} 
-                                label={<AddressSelected />} 
-                            />
-                                
-                            <FormControlLabel value="check_2" 
-                                control={<Radio sx={{'&.Mui-checked': {color: deepOrange[900]}}} />} 
-                                label={<AddressNotSelected />} 
-                            />
-                                
-                        </RadioGroup>
+                        <AddressSelected />
                     </div>
-                    <div className="cart-customer-detail-continue-button">
-                        <Button variant="contained">
+                    <div className="cart-customer-detail-continue-button" style={{
+                        display: props.placeOrderGetSet == 2 ? 'visible' : 'none'
+                    }}>
+                        <Button variant="contained" onClick={continueClickHandler}>
                             CONTINUE
                         </Button>
                     </div>
@@ -60,3 +69,11 @@ export default function CustomerDetail() {
         </div>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        addressData: state.AddressReducer
+    }
+}
+
+export default connect(mapStateToProps) (CustomerDetail);

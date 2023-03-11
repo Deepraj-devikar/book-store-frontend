@@ -4,8 +4,20 @@ import CustomerDetail from "./CustomerDetail";
 import OrderSummery from "./OrderSummery";
 import PlaceOrder from "./PlaceOrder";
 import './CartPage.css';
+import { useState } from "react";
 
 export default function CartPage() {
+    const [state, setState] = useState({
+        placeOrderGetSet: 1
+    });
+
+    const countPlaceOrderGetSet = (count) => {
+        setState(prevState => ({
+            ...prevState,
+            placeOrderGetSet: count
+        }));
+    }
+
     return (
         <div className="cart-page-breadcrum-n-content">
             <div className="cart-page-breadcrum">
@@ -31,10 +43,9 @@ export default function CartPage() {
                 </Breadcrumbs>
             </div>
             <div className="cart-page-content">
-                <PlaceOrder />
-                <CloseBox />
-                <CustomerDetail />
-                <OrderSummery />
+                <PlaceOrder placeOrderGetSet={state.placeOrderGetSet} countPlaceOrderGetSet={countPlaceOrderGetSet}/>
+                {state.placeOrderGetSet > 1 ? <CustomerDetail placeOrderGetSet={state.placeOrderGetSet} countPlaceOrderGetSet={countPlaceOrderGetSet}/> : <CloseBox name="Address Details" />}
+                {state.placeOrderGetSet > 2 ? <OrderSummery placeOrderGetSet={state.placeOrderGetSet} countPlaceOrderGetSet={countPlaceOrderGetSet}/> : <CloseBox name="Order summery" />}
             </div>
         </div>
     );

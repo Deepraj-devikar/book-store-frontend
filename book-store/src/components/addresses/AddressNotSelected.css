@@ -3,7 +3,7 @@
     flex-flow: column nowrap;
     justify-content: start;
     align-items: start;
-    gap: 8px;
+    gap: 2px;
 }
 
 .cart-address-not-selected-address {

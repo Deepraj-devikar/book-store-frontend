@@ -1,4 +1,3 @@
-import { GetCartApi } from "../services/DataService";
 import { CART_DATA } from "./constants";
 
 const initalState = {

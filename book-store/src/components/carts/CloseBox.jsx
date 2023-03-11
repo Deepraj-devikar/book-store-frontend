@@ -1,7 +1,7 @@
 import { Paper } from "@mui/material";
 import './CloseBox.css';
 
-export default function CloseBox(){
+export default function CloseBox(props){
     return(
         <div className="cart-close-box">
             <Paper style={{
@@ -11,7 +11,7 @@ export default function CloseBox(){
                 opacity: 1
             }}>
                 <div className="cart-close-box-text">
-                    Address Details
+                    {props.name}
                 </div>
             </Paper>
         </div>

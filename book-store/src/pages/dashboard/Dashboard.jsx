@@ -12,8 +12,9 @@ function Dashboard(props) {
             <Header />
             <Container>
                 {
-                    props.bookView == null ? <Home /> : <BookPage data={props.bookView}/> 
-                    // <CartPage />
+                    props.pageView == 'home' ? <Home /> : 
+                    (props.pageView == 'book' ? <BookPage data={props.book}/> : 
+                    (props.pageView == 'cart' ? <CartPage /> : ''))
                 }
             </Container>
         </div>
@@ -21,9 +22,9 @@ function Dashboard(props) {
 }
 
 const mapStateToProps = (state) => {
-    console.log('in dashboard redux, ', state);
     return {
-        bookView: state.BookReducer.bookView
+        pageView: state.DashboardReducer.pageView,
+        book: state.DashboardReducer.book
     }
 }
 

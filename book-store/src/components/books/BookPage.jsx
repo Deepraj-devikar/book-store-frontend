@@ -22,7 +22,6 @@ function BookPage(props) {
     const addToBagClickHandler = () => {
         AddToCartApi(props.data._id)
         .then(response => {
-            console.log("Added to cart, ", response);
             if(response.status == 201){
                 setState(prevState => ({
                     ...prevState,
@@ -30,7 +29,6 @@ function BookPage(props) {
                     countAddedToCart: prevState.countAddedToCart + 1,
                     cartUpdateCount: prevState.cartUpdateCount + 1
                 }));
-                console.log(state);
             }
         })
         .catch(error => {
@@ -41,7 +39,6 @@ function BookPage(props) {
     const removeFromBagClickHadler = () => {
         RemoveFromCartApi(props.data._id)
         .then(response => {
-            console.log("Remove from cart, ", response);
             if(response.status == 202){
                 setState(prevState => ({
                     ...prevState,
@@ -59,7 +56,6 @@ function BookPage(props) {
         () => {
             GetCartApi()
             .then(response => {
-                console.log('my cart response, ', response);
                 props.dispatch({
                     type: CART_DATA,
                     cartData: response.data.data
@@ -143,9 +139,9 @@ function BookPage(props) {
                                     </Button>
                                 :
                                     <ButtonGroup variant="outlined" aria-label="outlined button group">
-                                        <Button onClick={addToBagClickHandler}> + </Button>
-                                        <Button> {state.countAddedToCart} </Button>
                                         <Button onClick={removeFromBagClickHadler}> - </Button>
+                                        <Button> {state.countAddedToCart} </Button>
+                                        <Button onClick={addToBagClickHandler}> + </Button>
                                     </ButtonGroup>
                             }
                             <Button sx={{
@@ -248,7 +244,6 @@ function BookPage(props) {
 }
 
 const mapStateToProps = (state) => {
-    console.log('in header redux, ', state);
     return {
         cartData: state.CartReducer.cartData
     }

@@ -17,7 +17,6 @@ export default function Home() {
         () => {
             GetAllBooksApi()
             .then(response => {
-                console.log(response);
                 if(response.status == 200){
                     setState(prevState => ({...prevState, books: response.data.data}))
                 }

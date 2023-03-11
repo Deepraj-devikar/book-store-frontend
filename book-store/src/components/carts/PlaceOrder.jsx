@@ -1,9 +1,10 @@
-import { Button, ButtonGroup, MenuItem, Paper, Select } from "@mui/material";
+import { Button, MenuItem, Paper, Select } from "@mui/material";
 import './PlaceOrder.css';
 import RoomIcon from '@mui/icons-material/Room';
-import image from '../../images/Image-11@2x.png';
+import CartPlaceOrderBook from "../books/CartPlaceOrderBook";
+import { connect } from "react-redux";
 
-export default function PlaceOrder() {
+function PlaceOrder(props) {
     return(
         <div className="cart-placeorder-box">
             <Paper style={{
@@ -35,46 +36,15 @@ export default function PlaceOrder() {
                             </Select>
                         </div>
                     </div>
-                    <div className="cart-place-order-product">
-                        <div className="cart-place-order-product-image">
-                            <img src={image} width="100%"/>
-                        </div>
-                        <div className="cart-place-order-product-detail">
-                            <div className="cart-place-order-product-detail-book-name">
-                                Don't Make Me Think
-                            </div>
-                            <div className="cart-place-order-product-detail-author-name">
-                                by Steve Krug
-                            </div>
-                            <div className="cart-place-order-product-detail-price">
-                                <div className="cart-place-order-product-detail-price-right">
-                                    Rs. 1500
-                                </div>
-                                <div className="cart-place-order-product-detail-price-wrong">
-                                    Rs. 2000
-                                </div>
-                            </div>
-                            <div className="cart-place-order-product-detail-cart-buttons">
-                                <ButtonGroup variant="outlined" aria-label="outlined button group" size="small">
-                                    <Button size="small"> + </Button>
-                                    <Button size="small"> 5 </Button>
-                                    <Button size="small"> - </Button>
-                                </ButtonGroup>
-                                <Button variant="text" sx={{
-                                    textTransform: 'none',
-                                    textAlign: 'left',
-                                    font: '15px Lato',
-                                    letterSpacing: '0px',
-                                    color: '#0A0102',
-                                    opacity: 1
-                                }}>
-                                    Remove
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="cart-place-order-make-place-order-button">
-                        <Button variant="contained">
+                    {
+                        props.cartData.books.map(book => (
+                            <CartPlaceOrderBook key={book._id} data={book} />
+                        ))
+                    }
+                    <div className="cart-place-order-make-place-order-button" style={{
+                        display: props.placeOrderGetSet == 1 ? 'visible' : 'none'
+                    }}>
+                        <Button variant="contained" onClick={() => props.countPlaceOrderGetSet(2)}>
                             PLACE ORDER
                         </Button>
                     </div>
@@ -83,3 +53,11 @@ export default function PlaceOrder() {
         </div>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        cartData: state.CartReducer.cartData
+    }
+}
+
+export default connect(mapStateToProps) (PlaceOrder);
