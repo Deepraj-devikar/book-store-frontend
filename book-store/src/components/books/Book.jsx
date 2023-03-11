@@ -2,21 +2,30 @@ import { Paper } from "@mui/material";
 import bookImage from '../../images/Image-10@2x.png';
 import './Book.css';
 import StarRateIcon from '@mui/icons-material/StarRate';
+import { BOOK_PAGE } from "../../redux/constants";
+import { connect } from "react-redux";
 
-export default function Book() {
+function Book(props) {
+    const bookViewHandler = () => {
+        props.dispatch({
+            type: BOOK_PAGE,
+            book: props.data
+        });
+    };
+
     return (
         <div className="book-outer">
-            <Paper>
+            <Paper onClick={bookViewHandler}>
                 <div className="book-in-paper">
                     <div className="book-image-holder">
-                        <img src={bookImage} width='60%'/>
+                        <img src={props.data.bookImage ? props.data.bookImage : bookImage} width='60%'/>
                     </div>
                     <div className="book-detail-holder">
                         <div className="book-book-name-text">
-                            Don't Make Me Think
+                            {props.data.bookName}
                         </div>
                         <div className="book-author-name-text">
-                            by Steve Krug
+                            {props.data.author}
                         </div>
                         <div className="book-rating-n-comments">
                             <div className="book-rating">
@@ -29,7 +38,7 @@ export default function Book() {
                         </div>
                         <div className="book-price">
                             <div className="book-price-right">
-                                Rs. 1500
+                                Rs. {props.data.price}
                             </div>
                             <div className="book-price-wrong">
                                 Rs. 2000
@@ -41,3 +50,5 @@ export default function Book() {
         </div>
     );
 }
+
+export default connect()(Book);

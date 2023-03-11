@@ -53,6 +53,10 @@
     padding: 4px 0;
 }
 
+.book-page-small-image-holder, .book-page-small-image-holder-active, .book-page-big-image {
+    width: 100%;
+}
+
 .book-page-big-image-n-buttons {
     width: 88%;
     display: flex;

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,6 +12,10 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import { Container } from '@mui/material';
 import bookLogo from '../../images/education.svg';
 import './Header.css';
+import { connect } from "react-redux";
+import { useEffect } from 'react';
+import { CART_DATA } from '../../redux/constants';
+import { GetCartApi } from '../../services/DataService';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -55,7 +58,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function Header() {
+function Header(props) {
+    // cart length will fetch in props.cartData.books.length;
+
+    useEffect(
+        () => {
+            GetCartApi()
+            .then(response => {
+                console.log('my cart response, ', response);
+                props.dispatch({
+                    type: CART_DATA,
+                    cartData: response.data.data
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
+        []
+    )
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{backgroundColor: '#A03037'}}>
@@ -98,7 +120,7 @@ export default function Header() {
                             aria-label="show 17 new notifications"
                             color="inherit"
                         >
-                            <Badge badgeContent={17} color="error">
+                            <Badge badgeContent={props.cartData ? props.cartData.books.length : 0} color="error">
                                 <ShoppingCartOutlinedIcon />
                             </Badge>
                         </IconButton>
@@ -108,4 +130,13 @@ export default function Header() {
             </AppBar>
         </Box>
     );
+};
+
+const mapStateToProps = (state) => {
+    console.log('in header redux, ', state);
+    return {
+        cartData: state.CartReducer.cartData
+    }
 }
+
+export default connect(mapStateToProps) (Header);
