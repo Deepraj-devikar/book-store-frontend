@@ -1,10 +1,16 @@
 import { Button, Paper } from "@mui/material";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router";
 import CartOrderSummeryBook from "../books/CartOrderSummeryBook";
 import './OrderSummery.css';
 
 function OrderSummery(props) {
-    console.log("order summery component, ", props.cartData.books);
+    const navigate = useNavigate();
+
+    const placeOrderClickHandler = () => {
+        navigate('/order');
+    }
+
     return (
         <div className="cart-order-summery-box">
             <Paper style={{
@@ -25,7 +31,7 @@ function OrderSummery(props) {
                     <div className="cart-order-summery-checkout-button" style={{
                         display: props.placeOrderGetSet == 3 ? 'visible' : 'none'
                     }}>
-                        <Button variant="contained">
+                        <Button variant="contained" onClick={placeOrderClickHandler}>
                             PLACE ORDER
                         </Button>
                     </div>
@@ -36,7 +42,6 @@ function OrderSummery(props) {
 }
 
 const mapStateToProps = (state) => {
-    console.log("Oreder summery, ", state);
     return {
         cartData: state.CartReducer.cartData
     }

@@ -16,6 +16,7 @@ import { connect } from "react-redux";
 import { useEffect } from 'react';
 import { CART_DATA, CART_PAGE } from '../../redux/constants';
 import { GetCartApi } from '../../services/DataService';
+import { useNavigate } from 'react-router';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -60,7 +61,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function Header(props) {
     // cart length will fetch in props.cartData.books.length;
-
     useEffect(
         () => {
             GetCartApi()
@@ -77,10 +77,10 @@ function Header(props) {
         []
     )
 
+    const navigate = useNavigate();
+
     const cartIconClickHandler = () => {
-        props.dispatch({
-            type: CART_PAGE
-        });
+        navigate('/cart');
     };
 
     return (
