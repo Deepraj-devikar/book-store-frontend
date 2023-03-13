@@ -1,8 +1,9 @@
-import { BOOK_PAGE, CART_PAGE } from "./constants";
+import { BOOK_PAGE, CART_PAGE, SEARCH } from "./constants";
 
 const initalState = {
     pageView: 'home',
-    book: null
+    book: null,
+    search: ''
 }
 
 export default function DashboardReducer(state = initalState, action) {
@@ -18,6 +19,11 @@ export default function DashboardReducer(state = initalState, action) {
                 ...state, 
                 pageView: 'cart'
             };
+        case SEARCH:
+            return {
+                ...state,
+                search: action.search
+            }
         default:
             return state;
     }    

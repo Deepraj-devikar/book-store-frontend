@@ -4,9 +4,10 @@ import Cart from "../pages/cart/Cart";
 import Dashboard from "../pages/dashboard/Dashboard";
 import LoginSignup from "../pages/login-signup/LoginSignup";
 import OrderPlaced from "../pages/order-placed/OrderPlaced";
+import Wishlist from "../pages/wishlist/Wishlist";
 
 export default function Router() {
-    const [state, setState] = useState({
+    const [state] = useState({
         authorizationToken: localStorage.getItem('authorizationToken')
     });
     return (
@@ -19,6 +20,7 @@ export default function Router() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/cart" element={<Cart />} />
                     <Route path="/order" element={<OrderPlaced />} />
+                    <Route path="/wishlist" element={<Wishlist />} />
                 </Routes>
             </BrowserRouter>
         </div>

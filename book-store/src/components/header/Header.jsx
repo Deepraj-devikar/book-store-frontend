@@ -1,4 +1,4 @@
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,9 +14,10 @@ import bookLogo from '../../images/education.svg';
 import './Header.css';
 import { connect } from "react-redux";
 import { useEffect } from 'react';
-import { CART_DATA, CART_PAGE } from '../../redux/constants';
+import { CART_DATA, CART_PAGE, SEARCH } from '../../redux/constants';
 import { GetCartApi } from '../../services/DataService';
 import { useNavigate } from 'react-router';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -83,6 +84,17 @@ function Header(props) {
         navigate('/cart');
     };
 
+    const wishlistIconClickHandler = () => {
+        navigate('/wishlist');
+    }
+
+    const searchHandler = (e) => {
+        props.dispatch({
+            type: SEARCH,
+            search: e.target.value
+        })
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" sx={{backgroundColor: '#A03037'}}>
@@ -107,6 +119,7 @@ function Header(props) {
                             placeholder="Search…"
                             inputProps={{ 'aria-label': 'search' }}
                             fullWidth={true}
+                            onChange={searchHandler}
                         />
                     </Search>
                     <Box sx={{ flexGrow: 0.3 }} />
@@ -129,6 +142,14 @@ function Header(props) {
                             <Badge badgeContent={props.cartData ? props.cartData.books.length : 0} color="error">
                                 <ShoppingCartOutlinedIcon />
                             </Badge>
+                        </IconButton>
+                        <IconButton
+                            size="large"
+                            aria-label="show 17 new notifications"
+                            color="inherit"
+                            onClick={wishlistIconClickHandler}
+                        >
+                            <FavoriteIcon />
                         </IconButton>
                     </Box>
                 </Toolbar>
