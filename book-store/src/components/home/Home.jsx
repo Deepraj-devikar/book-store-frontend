@@ -65,8 +65,7 @@ function Home(props) {
     const booksSearchMethod = (book) => {
         const search = props.search.toLowerCase()
         return book.bookName.toLowerCase().includes(search) ||
-            book.author.toLowerCase().includes(search) ||
-            book.description.toLowerCase().includes(search);
+            book.author.toLowerCase().includes(search);
     };
 
     const booksSliceMethod = () => [state.startBookIndex, state.startBookIndex + state.pageLimit];

@@ -14,8 +14,8 @@ import bookLogo from '../../images/education.svg';
 import './Header.css';
 import { connect } from "react-redux";
 import { useEffect } from 'react';
-import { CART_DATA, CART_PAGE, SEARCH } from '../../redux/constants';
-import { GetCartApi } from '../../services/DataService';
+import { CART_DATA, CART_PAGE, SEARCH, WISHLIST_DATA } from '../../redux/constants';
+import { GetCartApi, GetWishlistApi } from '../../services/DataService';
 import { useNavigate } from 'react-router';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
@@ -70,6 +70,18 @@ function Header(props) {
                     type: CART_DATA,
                     cartData: response.data.data
                 });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+            GetWishlistApi()
+            .then(response => {
+                if(response.status == 200){
+                    props.dispatch({
+                        type: WISHLIST_DATA,
+                        wishlistData: response.data.data
+                    });
+                }
             })
             .catch(error => {
                 console.log(error);

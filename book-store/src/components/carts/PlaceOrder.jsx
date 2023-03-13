@@ -16,7 +16,7 @@ function PlaceOrder(props) {
                 <div className="cart-place-order-content">
                     <div className="cart-place-order-title-n-location">
                         <div className="cart-place-order-title">
-                            My Cart (1)
+                            My Cart ({props.cartData.books.length})
                         </div>
                         <div className="cart-place-order-location">
                             <Select

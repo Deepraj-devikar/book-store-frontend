@@ -5,10 +5,11 @@ import './Dashboard.css';
 import { connect } from "react-redux";
 import BookPage from "../../components/books/BookPage";
 import CartPage from "../../components/carts/CartPage";
+import Footer from "../../components/footer/Footer";
 
 function Dashboard(props) {
     return (
-        <div>
+        <div className="main-dashboard-page">
             <Header />
             <Container>
                 {
@@ -17,6 +18,7 @@ function Dashboard(props) {
                     (props.pageView == 'cart' ? <CartPage /> : ''))
                 }
             </Container>
+            <Footer />
         </div>
     );
 }

@@ -1,9 +1,9 @@
 import { Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import Header from "../../components/header/Header";
-import StarRateIcon from '@mui/icons-material/StarRate';
-import { yellow } from '@mui/material/colors';
 import './OrderPlaced.css';
 import { useNavigate } from "react-router";
+import Footer from "../../components/footer/Footer";
+import image from '../../images/order-placed-successfully.jpg';
 
 function createData(email, contact, address) {
     return { email, contact, address };
@@ -22,14 +22,11 @@ export default function OrderPlaced() {
     }
 
     return (
-        <div>
+        <div className="main-order-placed-page">
             <Header />
             <Container>
                 <div className="order-place-content">
-                    <StarRateIcon sx={{ color: yellow[700] }} fontSize="large"/>
-                    <div className="order-placed-successfully-text"> 
-                        Order placed successfully
-                    </div>
+                    <img src={image} width='250px'/>
                     <div className="order-places-hurray-text">
                         hurray!!! your order is confirmed the order id is #123456 save the order id for further communication..
                     </div>
@@ -65,6 +62,7 @@ export default function OrderPlaced() {
                     </Button>
                 </div>
             </Container>
+            <Footer />
         </div>
     );
 }

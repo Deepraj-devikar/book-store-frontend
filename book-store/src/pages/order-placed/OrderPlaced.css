@@ -1,3 +1,10 @@
+.main-order-placed-page {
+    min-height: 100vh; 
+    margin: 0; 
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
 .order-place-content {
     height: 80vh;
     display: flex;

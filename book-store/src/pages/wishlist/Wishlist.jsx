@@ -1,44 +1,33 @@
-import { Breadcrumbs, Button, Container, Link } from "@mui/material";
+import { Breadcrumbs, Container, Link } from "@mui/material";
 import Header from "../../components/header/Header";
 import './Wishlist.css';
 import WishlistBook from "../../components/books/WishlistBook";
-import { useEffect, useState } from "react";
 import { GetWishlistApi, RemoveFromWishlistApi } from "../../services/DataService";
+import { WISHLIST_DATA } from "../../redux/constants";
+import { connect } from "react-redux";
+import Footer from "../../components/footer/Footer";
 
-export default function Wishlist() {
-    const [state, setState] = useState({
-        wishlistData: {
-            books: []
-        },
-        updateWishlist: 0
-    });
-
-    useEffect(
-        () => {
-            GetWishlistApi()
-            .then(response => {
-                if(response.status == 200){
-                    setState(prevState => ({
-                        ...prevState,
-                        wishlistData: response.data.data
-                    }));
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            });
-        },
-        [state.updateWishlist]
-    );
+function Wishlist(props) {
+    const updateWishlist = () => {
+        GetWishlistApi()
+        .then(response => {
+            if(response.status == 200){
+                props.dispatch({
+                    type: WISHLIST_DATA,
+                    wishlistData: response.data.data
+                });
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
 
     const deleteHandler = (bookID) => {
         RemoveFromWishlistApi(bookID)
         .then(response => {
             if(response.status == 202) {
-                setState(prevState => ({
-                    ...prevState,
-                    updateWishlist: prevState.updateWishlist + 1
-                }));
+                updateWishlist();
             }
         })
         .catch(error => {
@@ -47,7 +36,7 @@ export default function Wishlist() {
     }
 
     return (
-        <div>
+        <div className="main-wishlist-page">
             <Header />
             <Container>
                 <div className="wishlist-page-breadcrum-n-content">
@@ -76,11 +65,11 @@ export default function Wishlist() {
                     <div className="wishlist-page-content">
                         <div className="wishlist-page-table-head">
                             <div >
-                                My Wishlist (02)
+                                My Wishlist ({props.wishlistData.books.length})
                             </div>
                         </div>
                         {
-                            state.wishlistData.books.map(book => (
+                            props.wishlistData.books.map(book => (
                                 <div className="wishlist-page-table-content">
                                     <WishlistBook key={book.prductID} data={book} deleteHandler={deleteHandler}/>
                                 </div>
@@ -89,6 +78,15 @@ export default function Wishlist() {
                     </div>
                 </div>
             </Container>
+            <Footer />
         </div>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        wishlistData: state.WishlistReducer.wishlistData
+    }
+}
+
+export default connect(mapStateToProps) (Wishlist);

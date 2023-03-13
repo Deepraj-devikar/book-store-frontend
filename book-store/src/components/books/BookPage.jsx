@@ -8,15 +8,17 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import Textarea from '@mui/joy/Textarea';
 import Feedback from "../../components/feedback/Feedback";
 import { useEffect, useState } from "react";
-import { AddToCartApi, AddToWishlistApi, GetCartApi, RemoveFromCartApi } from "../../services/DataService";
+import { AddToCartApi, AddToWishlistApi, GetCartApi, GetWishlistApi, RemoveFromCartApi } from "../../services/DataService";
 import { connect } from "react-redux";
-import { CART_DATA } from "../../redux/constants";
+import { CART_DATA, WISHLIST_DATA } from "../../redux/constants";
 
 function BookPage(props) {
     const [state, setState] = useState({
         addedToCart: props.cartData != 0 && props.cartData.books.filter(book => book.productID == props.data._id).length > 0 ? true : false,
         countAddedToCart: props.cartData != 0 && props.cartData.books.filter(book => book.productID == props.data._id).length > 0 ? props.cartData.books.filter(book => book.productID == props.data._id)[0].quantity : 0,
-        cartUpdateCount: 0
+        cartUpdateCount: 0,
+        wishlistUpdateCount: 0,
+        isInWishlist: false
     });
 
     const addToBagClickHandler = () => {
@@ -54,6 +56,20 @@ function BookPage(props) {
 
     useEffect(
         () => {
+            for(let index = 0; index < props.wishlistData.books.length; index++){
+                if(props.wishlistData.books[index].productID == props.data._id){
+                    setState(prevState => ({
+                        ...prevState,
+                        isInWishlist: true
+                    }));
+                }
+            }
+        },
+        []
+    )
+
+    useEffect(
+        () => {
             GetCartApi()
             .then(response => {
                 props.dispatch({
@@ -66,13 +82,36 @@ function BookPage(props) {
             });
         },
         [state.cartUpdateCount]
-    )
+    );
+
+    useEffect(
+        () => {
+            GetWishlistApi()
+            .then(response => {
+                if(response.status == 200){
+                    props.dispatch({
+                        type: WISHLIST_DATA,
+                        wishlistData: response.data.data
+                    });
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        },
+        [state.wishlistUpdateCount]
+    );
 
     const addToWishlistClickHandler = () => {
         AddToWishlistApi(props.data._id)
         .then(response => {
             if(response.status == 201) {
                 console.log("Book added to wishlist");
+                setState(prevState => ({
+                    ...prevState,
+                    isInWishlist: true,
+                    wishlistUpdateCount: prevState.wishlistUpdateCount + 1
+                }));
             }
         })
         .catch(error => {
@@ -144,25 +183,48 @@ function BookPage(props) {
                                         <Button onClick={addToBagClickHandler}> + </Button>
                                     </ButtonGroup>
                             }
-                            <Button sx={{
-                                width: '100%',
-                                background: '#333333 0% 0% no-repeat padding-box',
-                                borderRadius: '2px',
-                                opacity: 1,
-                                color: '#fff',
-                                '&:hover': {
-                                    width: '100%',
-                                    background: '#333333 0% 0% no-repeat padding-box',
-                                    borderRadius: '2px',
-                                    opacity: 1,
-                                    color: '#fff'
-                                }
-                            }} onClick={addToWishlistClickHandler}>
-                                <div className="book-page-image-burron-wishlit">
-                                    <FavoriteIcon />
-                                    WISHLIST
-                                </div>
-                            </Button>
+                            {
+                                state.isInWishlist ? 
+                                    <Button sx={{
+                                        width: '100%',
+                                        background: '#fff 0% 0% no-repeat padding-box',
+                                        borderRadius: '2px',
+                                        opacity: 1,
+                                        color: '#A03037',
+                                        '&:hover': {
+                                            width: '100%',
+                                            background: '#fff 0% 0% no-repeat padding-box',
+                                            borderRadius: '2px',
+                                            opacity: 1,
+                                            color: '#A03037'
+                                        }
+                                    }}>
+                                        <div className="book-page-image-burron-wishlit">
+                                            <FavoriteIcon />
+                                            FAVORITE
+                                        </div>
+                                    </Button>
+                                :
+                                    <Button sx={{
+                                        width: '100%',
+                                        background: '#333333 0% 0% no-repeat padding-box',
+                                        borderRadius: '2px',
+                                        opacity: 1,
+                                        color: '#fff',
+                                        '&:hover': {
+                                            width: '100%',
+                                            background: '#333333 0% 0% no-repeat padding-box',
+                                            borderRadius: '2px',
+                                            opacity: 1,
+                                            color: '#fff'
+                                        }
+                                    }} onClick={addToWishlistClickHandler}>
+                                        <div className="book-page-image-burron-wishlit">
+                                            <FavoriteIcon />
+                                            WISHLIST
+                                        </div>
+                                    </Button>
+                            }
                         </div>
                     </div>
                 </div>
@@ -245,7 +307,8 @@ function BookPage(props) {
 
 const mapStateToProps = (state) => {
     return {
-        cartData: state.CartReducer.cartData
+        cartData: state.CartReducer.cartData,
+        wishlistData: state.WishlistReducer.wishlistData
     }
 }
 
