@@ -41,3 +41,11 @@ export const getCustomerApi = async () => {
 export const RemoveFromWishlistApi = async (bookID) => {
     return await instance.post(`wishlists/remove/book/${bookID}`);
 };
+
+export const AddAddressApi = async (data) => {
+    return await instance.post(`customers/add/address`, data);
+}
+
+export const PurchaseApi = async () => {
+    return await instance.post(`carts/purchase`);
+}

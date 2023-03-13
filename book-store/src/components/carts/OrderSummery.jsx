@@ -1,14 +1,39 @@
 import { Button, Paper } from "@mui/material";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router";
+import { CART_DATA } from "../../redux/constants";
+import { GetCartApi, PurchaseApi } from "../../services/DataService";
 import CartOrderSummeryBook from "../books/CartOrderSummeryBook";
 import './OrderSummery.css';
 
 function OrderSummery(props) {
     const navigate = useNavigate();
 
+    const setUpCart = () => {
+        GetCartApi()
+        .then(response => {
+            props.dispatch({
+                type: CART_DATA,
+                cartData: response.data.data
+            });
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
     const placeOrderClickHandler = () => {
-        navigate('/order');
+        PurchaseApi()
+        .then(response => {
+            console.log("Purchase api ", response);
+            if(response.status == 202) {
+                setUpCart();     
+                navigate('/order');
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     return (

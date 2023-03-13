@@ -6,7 +6,7 @@ const initalState = {
     fullAddress: '',
     city: '',
     state: '',
-    addressType: 'WORK'
+    addressType: 'home'
 };
 
 export default function AddressReducer(state = initalState, action) {

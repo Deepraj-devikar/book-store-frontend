@@ -1,6 +1,7 @@
 import { Button, Paper, TextField } from "@mui/material";
 import { connect } from "react-redux";
 import { ADDRESS } from "../../redux/constants";
+import { AddAddressApi } from "../../services/DataService";
 import AddressSelected from "../addresses/AddressSelected";
 import './CustomerDetail.css';
 
@@ -21,7 +22,16 @@ function CustomerDetail(props) {
             }
         }
         if(isValidAddress){
-            props.countPlaceOrderGetSet(3);
+            AddAddressApi(props.addressData)
+            .then(response => {
+                console.log('Add Address, ', response);
+                if (response.status == 201) {
+                    props.countPlaceOrderGetSet(3);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
         }else{
             alert("Enter Address...")
         }
@@ -52,8 +62,8 @@ function CustomerDetail(props) {
                     </div>
                     <div className="cart-customer-detail-addresses">
                         <div className="cart-customer-detail-user-detail">
-                            <TextField size="small" fullWidth={true} label="Full Name" name="name" onChange={handleUserInput}/>
-                            <TextField size="small" fullWidth={true} label="Mobile Number" name="phoneNumber" onChange={handleUserInput}/>
+                            <TextField size="small" fullWidth={true} label="Full Name" name="name" onChange={handleUserInput} value={props.addressData.name}/>
+                            <TextField size="small" fullWidth={true} label="Mobile Number" name="phoneNumber" onChange={handleUserInput} value={props.addressData.phoneNumber}/>
                         </div>
                         <AddressSelected />
                     </div>

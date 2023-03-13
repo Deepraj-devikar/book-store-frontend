@@ -4,31 +4,7 @@
     flex-flow: column nowrap;
     justify-content: start;
     align-items: start;
-    gap: 8px;
-}
-
-.cart-address-selected-title-n-edit {
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: start;
-    align-items: center;
-    gap: 4px;
-}
-
-.cart-address-selected-title {
-    text-align: left;
-    font: 20px Roboto;
-    letter-spacing: 0px;
-    color: #0A0102;
-    opacity: 1;
-}
-
-.cart-address-selected-edit {
-    text-align: left;
-    font: 16px Roboto;
-    letter-spacing: 0px;
-    color: #A03037;
-    opacity: 1;
+    gap: 16px;
 }
 
 .cart-address-selected-address-textarea {
